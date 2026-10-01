@@ -164,16 +164,23 @@ const lyricsTimeline = [
     });
 
     music.addEventListener('timeupdate', () => {
-      const currentTime = music.currentTime;
-      const currentSubtitle = lyricsTimeline.reduce((prev, curr) => {
-        return (currentTime >= curr.time) ? curr : prev;
-      }, lyricsTimeline[0]);
+  const currentTime = music.currentTime;
+  
+  // Si el audio está en la intro (antes de los 18 segundos)
+  if (currentTime < 18) {
+    subtitleEl.innerText = "🎵 ...";
+    return;
+  }
 
-      if (subtitleEl.innerText !== currentSubtitle.text) {
-        subtitleEl.innerText = currentSubtitle.text;
-      }
-    });
+  // Encuentra el verso que corresponde al tiempo actual
+  const currentSubtitle = lyricsTimeline.reduce((prev, curr) => {
+    return (currentTime >= curr.time) ? curr : prev;
+  }, lyricsTimeline[0]);
 
+  if (subtitleEl.innerText !== currentSubtitle.text) {
+    subtitleEl.innerText = currentSubtitle.text;
+  }
+});
     function createParticle(x, y) {
       const el = document.createElement('div');
       el.className = 'floating-text';
