@@ -30,23 +30,26 @@
       text-align: center;
       z-index: 10;
       padding: 20px;
-      pointer-events: none;
     }
 
     h1 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       text-shadow: 0 0 15px rgba(255, 182, 193, 0.6);
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s ease-in-out;
     }
 
     p {
-      font-size: 1.1rem;
-      opacity: 0.85;
+      font-size: 1rem;
+      opacity: 0.8;
       margin-bottom: 25px;
     }
 
     .start-btn {
-      pointer-events: auto;
       padding: 12px 28px;
       font-size: 1rem;
       border: none;
@@ -56,7 +59,7 @@
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s;
     }
 
     .start-btn:active {
@@ -90,8 +93,8 @@
 <body>
 
   <div class="container">
-    <h1>"That's why I love fall, looking at the stars..." 🍂</h1>
-    <p>Toca la pantalla para descubrir mensajes especiales</p>
+    <h1 id="subtitles">"That's why I love fall, looking at the stars..." 🍂</h1>
+    <p id="instruction">Presiona el botón para iniciar la música</p>
     <button class="start-btn" id="startBtn">Reproducir Música 🎵</button>
   </div>
 
@@ -102,20 +105,32 @@
   <script>
     const music = document.getElementById('bgMusic');
     const startBtn = document.getElementById('startBtn');
+    const subtitleEl = document.getElementById('subtitles');
+    const instructionEl = document.getElementById('instruction');
     let musicStarted = false;
 
-    const messages = [
-      "You will be my girl 💖",
-      "We fell in love in October...",
-      "My girl, my girl, my girl ✨",
-      "Eres mi persona favorita 🥰",
-      "Feliz 1 de octubre 🍂",
-      "You look so pretty...",
-      "Gracias por estar a mi lado ❤️",
-      "Te amo muchísimo 💌",
-      "Looking at the stars... 🌟"
+    // Arreglo de subtítulos sincronizados por tiempo (en segundos)
+    const lyricsTimeline = [
+      { time: 0, text: "Smoking cigarettes on the roof..." },
+      { time: 6, text: "You look so pretty and I love this view..." },
+      { time: 13, text: "Don't line up, we fell in love in October..." },
+      { time: 20, text: "That's why I love fall..." },
+      { time: 24, text: "Looking at the stars..." },
+      { time: 28, text: "Admiring from afar..." },
+      { time: 35, text: "My girl, my girl, my girl..." },
+      { time: 42, text: "You will be my girl 💖" },
+      { time: 50, text: "My girl, my girl, my girl..." },
+      { time: 58, text: "You will be my world ✨" }
     ];
 
+    // Frases flotantes al tocar la pantalla
+    const touchMessages = [
+      "Te Amo Mi Javicita ❤️",
+      "Me Gustaas",
+      "Amooor De Mi Vidaaa 🥰",
+      "Mi Mundo Entero ✨",
+      "Mi Noviecita Linda 💖"
+    ];
     const colors = ["#ff758c", "#ff7eb3", "#fa709a", "#fee140", "#ffffff", "#e0c3fc"];
 
     function playAudio() {
@@ -123,7 +138,8 @@
         music.play().then(() => {
           musicStarted = true;
           startBtn.style.display = 'none';
-        }).catch(err => console.log("Autoplay blocked:", err));
+          instructionEl.innerText = "Toca la pantalla para soltar destellos 💖";
+        }).catch(err => console.log("Autoplay bloqueado:", err));
       }
     }
 
@@ -132,11 +148,24 @@
       playAudio();
     });
 
+    // Evento que evalúa el tiempo actual de la canción
+    music.addEventListener('timeupdate', () => {
+      const currentTime = music.currentTime;
+      // Encuentra la última frase que coincida con el segundo actual
+      const currentSubtitle = lyricsTimeline.reduce((prev, curr) => {
+        return (currentTime >= curr.time) ? curr : prev;
+      }, lyricsTimeline[0]);
+
+      if (subtitleEl.innerText !== currentSubtitle.text) {
+        subtitleEl.innerText = currentSubtitle.text;
+      }
+    });
+
     function createParticle(x, y) {
       const el = document.createElement('div');
       el.className = 'floating-text';
       
-      const text = messages[Math.floor(Math.random() * messages.length)];
+      const text = touchMessages[Math.floor(Math.random() * touchMessages.length)];
       const color = colors[Math.floor(Math.random() * colors.length)];
 
       el.innerText = text;
@@ -153,14 +182,16 @@
     }
 
     window.addEventListener('click', (e) => {
-      playAudio();
-      createParticle(e.clientX, e.clientY);
+      if (musicStarted) {
+        createParticle(e.clientX, e.clientY);
+      }
     });
 
     window.addEventListener('touchstart', (e) => {
-      playAudio();
-      const touch = e.touches[0];
-      createParticle(touch.clientX, touch.clientY);
+      if (musicStarted) {
+        const touch = e.touches[0];
+        createParticle(touch.clientX, touch.clientY);
+      }
     }, { passive: true });
   </script>
 </body>
