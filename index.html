@@ -30,22 +30,24 @@
       text-align: center;
       z-index: 10;
       padding: 20px;
+      max-width: 90%;
     }
 
     h1 {
       font-size: 2rem;
       text-shadow: 0 0 15px rgba(255, 182, 193, 0.6);
       margin-bottom: 15px;
-      min-height: 80px;
+      min-height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.3s ease-in-out;
+      transition: opacity 0.3s ease;
+      line-height: 1.4;
     }
 
     p {
-      font-size: 1rem;
-      opacity: 0.8;
+      font-size: 1.1rem;
+      opacity: 0.85;
       margin-bottom: 25px;
     }
 
@@ -93,7 +95,7 @@
 <body>
 
   <div class="container">
-    <h1 id="subtitles">"That's why I love fall, looking at the stars..." 🍂</h1>
+    <h1 id="subtitles">"We fell in love in October..." 🍂</h1>
     <p id="instruction">Presiona el botón para iniciar la música</p>
     <button class="start-btn" id="startBtn">Reproducir Música 🎵</button>
   </div>
@@ -109,27 +111,40 @@
     const instructionEl = document.getElementById('instruction');
     let musicStarted = false;
 
-    // Arreglo de subtítulos sincronizados por tiempo (en segundos)
-    const lyricsTimeline = [
-      { time: 0, text: "Smoking cigarettes on the roof..." },
-      { time: 6, text: "You look so pretty and I love this view..." },
-      { time: 13, text: "Don't line up, we fell in love in October..." },
-      { time: 20, text: "That's why I love fall..." },
-      { time: 24, text: "Looking at the stars..." },
-      { time: 28, text: "Admiring from afar..." },
-      { time: 35, text: "My girl, my girl, my girl..." },
-      { time: 42, text: "You will be my girl 💖" },
-      { time: 50, text: "My girl, my girl, my girl..." },
-      { time: 58, text: "You will be my world ✨" }
+    // ESTRUCTURA DE TIEMPOS (KARAOKE)
+    // Ajusta el parámetro 'time' en segundos según tu archivo 'cancion.mp3'
+const lyricsTimeline = [
+      { time: 0, text: "🎵 ..." },
+      { time: 18, text: "Smoking cigarettes on the roof..." },
+      { time: 26, text: "You look so pretty and I love this view..." },
+      { time: 33, text: "We fell in love in October..." },
+      { time: 37, text: "That's why I love fall..." },
+      { time: 41, text: "Looking at the stars..." },
+      { time: 45, text: "Admiring from afar..." },
+      { time: 48, text: "My girl, my girl, my girl..." },
+      { time: 54, text: "You will be my girl 💖" },
+      { time: 61, text: "You will be my world ✨" },
+      { time: 68, text: "You will be my girl 💖" },
+      { time: 77, text: "Smoking cigarettes on the roof..." },
+      { time: 85, text: "You look so pretty and I love this view..." },
+      { time: 91, text: "Don't bother looking down, we're not going that way..." },
+      { time: 98, text: "At least I know, I am here to stay..." },
+      { time: 106, text: "We fell in love in October..." },
+      { time: 111, text: "That's why I love fall..." },
+      { time: 115, text: "Looking at the stars..." },
+      { time: 119, text: "Admiring from afar..." },
+      { time: 125, text: "My girl, my girl, my girl..." },
+      { time: 142, text: "You will be my girl 💖" },
+      { time: 150, text: "You will be my world ✨" },
+      { time: 164, text: "You will be my girl 💖" }
     ];
 
-    // Frases flotantes al tocar la pantalla
     const touchMessages = [
-      "Te Amo Mi Javicita ❤️",
-      "Me Gustaas",
-      "Amooor De Mi Vidaaa 🥰",
-      "Mi Mundo Entero ✨",
-      "Mi Noviecita Linda 💖"
+      "Te amo ❤️",
+      "1 de octubre 🍂",
+      "Eres mi persona favorita 🥰",
+      "Mi mundo entero ✨",
+      "Siempre juntos 💖"
     ];
     const colors = ["#ff758c", "#ff7eb3", "#fa709a", "#fee140", "#ffffff", "#e0c3fc"];
 
@@ -138,7 +153,7 @@
         music.play().then(() => {
           musicStarted = true;
           startBtn.style.display = 'none';
-          instructionEl.innerText = "Toca la pantalla para soltar destellos 💖";
+          instructionEl.innerText = "Toca la pantalla para descubrir mensajes 💖";
         }).catch(err => console.log("Autoplay bloqueado:", err));
       }
     }
@@ -148,10 +163,8 @@
       playAudio();
     });
 
-    // Evento que evalúa el tiempo actual de la canción
     music.addEventListener('timeupdate', () => {
       const currentTime = music.currentTime;
-      // Encuentra la última frase que coincida con el segundo actual
       const currentSubtitle = lyricsTimeline.reduce((prev, curr) => {
         return (currentTime >= curr.time) ? curr : prev;
       }, lyricsTimeline[0]);
