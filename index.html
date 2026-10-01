@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>1 de Octubre 🍂</title>
   <style>
     * {
@@ -11,26 +11,26 @@
       box-sizing: border-box;
     }
 
-  body {
-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.JPG');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  user-select: none;
-  -webkit-user-select: none;
-  position: relative;
-}
+    body {
+      background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('fondo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+    }
 
-    /* Canvas para la animación de fondo */
     #bgCanvas {
       position: absolute;
       top: 0;
@@ -45,26 +45,27 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
       text-align: center;
       z-index: 10;
       padding: 20px;
-      max-width: 90%;
+      max-width: 95%;
     }
 
     h1 {
-      font-size: 2.2rem;
-      text-shadow: 0 0 20px rgba(255, 182, 193, 0.8), 0 0 10px rgba(255, 117, 140, 0.5);
+      font-size: 1.6rem;
+      text-shadow: 0 0 15px rgba(255, 182, 193, 0.9), 0 0 8px rgba(0, 0, 0, 0.8);
       margin-bottom: 15px;
-      min-height: 100px;
+      min-height: 90px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: opacity 0.3s ease;
-      line-height: 1.4;
+      line-height: 1.3;
+      padding: 0 10px;
     }
 
     p {
-      font-size: 1.1rem;
-      opacity: 0.85;
-      margin-bottom: 25px;
-      text-shadow: 0 0 5px rgba(0,0,0,0.5);
+      font-size: 0.95rem;
+      opacity: 0.9;
+      margin-bottom: 20px;
+      text-shadow: 0 0 6px rgba(0,0,0,0.8);
     }
 
     .start-btn {
@@ -76,7 +77,7 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
       color: white;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+      box-shadow: 0 4px 15px rgba(255, 117, 140, 0.5);
       transition: transform 0.2s, background 0.2s;
     }
 
@@ -89,29 +90,28 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
       pointer-events: none;
       font-weight: bold;
       white-space: nowrap;
-      animation: floatUp 2.5s ease-out forwards;
-      text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+      animation: floatUp 2.2s ease-out forwards;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
       z-index: 20;
     }
 
     @keyframes floatUp {
       0% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(0.6) translateY(0);
+        transform: translate(-50%, -50%) scale(0.7) translateY(0);
       }
       50% {
-        transform: translate(-50%, -50%) scale(1.1) translateY(-30px);
+        transform: translate(-50%, -50%) scale(1.05) translateY(-25px);
       }
       100% {
         opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9) translateY(-80px);
+        transform: translate(-50%, -50%) scale(0.85) translateY(-70px);
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fondo animado -->
   <canvas id="bgCanvas"></canvas>
 
   <div class="container">
@@ -125,7 +125,7 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
   </audio>
 
   <script>
-    // --- ANIMACIÓN DE FONDO (CANVAS) ---
+    // --- ANIMACIÓN DE FONDO ---
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -137,7 +137,7 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
     window.addEventListener('resize', resizeCanvas);
 
     const particles = [];
-    const particleCount = 40;
+    const particleCount = 25; // Optimizado para fluidez en móviles
     const leafShapes = ['🍂', '🍁', '✨', '🌸'];
 
     class Particle {
@@ -148,13 +148,13 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * -canvas.height;
-        this.size = Math.random() * 16 + 10;
-        this.speedY = Math.random() * 1.2 + 0.5;
-        this.speedX = Math.sin(Math.random() * Math.PI) * 0.8;
+        this.size = Math.random() * 14 + 10;
+        this.speedY = Math.random() * 1.0 + 0.4;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 0.6;
         this.symbol = leafShapes[Math.floor(Math.random() * leafShapes.length)];
         this.opacity = Math.random() * 0.7 + 0.3;
         this.rotation = Math.random() * 360;
-        this.rotSpeed = (Math.random() - 0.5) * 1.5;
+        this.rotSpeed = (Math.random() - 0.5) * 1.2;
       }
 
       update() {
@@ -193,7 +193,7 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
     }
     animate();
 
-    // --- REPRODUCTOR Y KARAOKE ---
+    // --- REPRODUCTOR Y TIMELINE ---
     const music = document.getElementById('bgMusic');
     const startBtn = document.getElementById('startBtn');
     const subtitleEl = document.getElementById('subtitles');
@@ -227,8 +227,8 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
     ];
 
     const touchMessages = [
-      "Te amo Mi Javicita❤️",
-      "Eres Mi Persona Favorita Mi Niña 🥰",
+      "Te amo Mi Javicita ❤️",
+      "Eres Mi Persona Favorita 🥰",
       "Amor De Mi Vidaaa ✨",
       "Me Gustas Mi Niña Piciosa 💖",
       "Eres Todo Para Mi 🥰"
@@ -278,27 +278,36 @@ background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('fondo.
       el.style.color = color;
       el.style.left = `${x}px`;
       el.style.top = `${y}px`;
-      el.style.fontSize = `${Math.random() * (1.3 - 0.9) + 0.9}rem`;
+      el.style.fontSize = `${Math.random() * (1.1 - 0.85) + 0.85}rem`;
 
       document.body.appendChild(el);
 
       setTimeout(() => {
         el.remove();
-      }, 2500);
+      }, 2200);
     }
 
-    window.addEventListener('click', (e) => {
-      if (musicStarted) {
-        createParticle(e.clientX, e.clientY);
-      }
-    });
+    // CONTROL DE TOUCH / CLICK ÚNICO PARA MÓVILES
+    let lastTouchTime = 0;
+
+    function handleInteraction(x, y) {
+      if (!musicStarted) return;
+      const now = Date.now();
+      if (now - lastTouchTime < 300) return; // Evita doble disparo por touch+click
+      lastTouchTime = now;
+      createParticle(x, y);
+    }
 
     window.addEventListener('touchstart', (e) => {
-      if (musicStarted) {
-        const touch = e.touches[0];
-        createParticle(touch.clientX, touch.clientY);
-      }
+      if (e.target.tagName === 'BUTTON') return;
+      const touch = e.touches[0];
+      handleInteraction(touch.clientX, touch.clientY);
     }, { passive: true });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') return;
+      handleInteraction(e.clientX, e.clientY);
+    });
   </script>
 </body>
 </html>
